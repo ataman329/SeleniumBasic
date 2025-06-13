@@ -1,6 +1,5 @@
 package sk.kozak;
 
-import net.bytebuddy.implementation.auxiliary.MethodCallProxy;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
