@@ -32,7 +32,7 @@ public class DimensionTest {
     @After
     public void tearDown() {
         if (driver != null) {
-//            driver.quit();
+            driver.quit();
         }
     }
 }
