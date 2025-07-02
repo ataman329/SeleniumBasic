@@ -18,6 +18,7 @@ public class BlankTest {
 
     @Test
     public void test() {
+        driver.get(BASE_URL);
     }
 
     @After
