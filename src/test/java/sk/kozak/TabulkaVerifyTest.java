@@ -46,9 +46,7 @@ public class TabulkaVerifyTest {  // <- rename file to match this class name
 
     @After
     public void tearDown() {
-        if (driver != null) {
-            driver.quit();
-        }
+        driver.quit();
 
         if (verificationErrors.length() > 0) {
             Assert.fail(verificationErrors.toString());

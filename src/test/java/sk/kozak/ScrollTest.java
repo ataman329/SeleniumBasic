@@ -31,9 +31,6 @@ public class ScrollTest {
         WebElement donald = driver.findElement(By.id("donald"));
         Actions actions = new Actions(driver);
 
-
-//        actions.clickAndHold(donald).moveByOffset(2000, 0).release().build().perform();
-
         int offsetX = maxX - 100;
         actions.clickAndHold(donald).moveByOffset(offsetX, 0).release().perform();
 
@@ -44,6 +41,6 @@ public class ScrollTest {
     @After
     public void tearDown(){
 
-//        driver.quit();
+        driver.quit();
     }
 }

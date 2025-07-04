@@ -38,6 +38,6 @@ public class ZjavenieTest {
 
     @After
     public void tearDown(){
-//        driver.quit();
+        driver.quit();
     }
 }

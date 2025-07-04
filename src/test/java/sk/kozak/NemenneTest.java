@@ -44,5 +44,6 @@ public class NemenneTest {
 
     @After
     public void tearDown() {
+        driver.quit();
     }
 }

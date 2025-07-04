@@ -36,7 +36,6 @@ public class Tabulkav2Test {
 
     @After
     public void tearDown() {
-        if (driver != null) {
-        }
+        driver.quit();
     }
 }

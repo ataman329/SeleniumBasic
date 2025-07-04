@@ -30,6 +30,6 @@ public class MyThirdTest {
 
     @After
     public void tearDown(){
-//        driver.quit();
+        driver.quit();
     }
 }

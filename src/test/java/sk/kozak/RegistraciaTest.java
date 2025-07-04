@@ -140,11 +140,13 @@ public class RegistraciaTest extends MainTest {
     public void testInputErrorBorder () {
         driver.findElement(By.xpath("//button[@type='submit']")).click();
 
-        List<WebElement> formDivs = driver.findElements(By.xpath("//div[input]"));
-        for (WebElement formDiv : formDivs) System.out.println(formDiv.getAttribute("class"));
+        Assert.assertTrue(
+                driver.findElement(By.xpath("//div[contains(@class,'form-group') and contains(@class,'has-error')]"))
+                        .isDisplayed()
+        );
 
-        driver.findElement(By.xpath("//button[@type='submit']")).click();
-
-        assertTrue(driver.findElement(By.xpath("//div[contains(@class,'form-group') and contains(@class,'has-error')]")).isDisplayed());
+        Assert.assertTrue(
+                driver.findElement(By.xpath("//div[contains(@class,'form-group') and contains(@class,'has-error')]"))
+                        .isDisplayed());
     }
 }

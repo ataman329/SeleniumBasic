@@ -50,5 +50,6 @@ public class RedAlertTest {
 
     @After
     public void tearDown() {
+        driver.quit();
     }
 }

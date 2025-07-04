@@ -36,5 +36,6 @@ public class WurstTest {
 
     @After
     public void tearDown() {
+        driver.quit();
     }
 }

@@ -26,12 +26,12 @@ public class SelectTest {
         new Select(driver.findElement(By.className("form-control"))).selectByVisibleText("Pikachu");
         System.out.println(driver.findElement(By.xpath("//div/h3")).getText());
 //        Assert.assertTrue(driver.findElement(By.xpath("//div/h3")).getText().contains("Pikachu"));
-        Assert.assertTrue("Pikachu sa v texte nenachadza", driver.findElement(By.xpath("//div/h3")).getText().contains("Pikachuasd"));
+        Assert.assertTrue("Pikachu sa v texte nenachadza", driver.findElement(By.xpath("//div/h3")).getText().contains("Pikachu"));
         Assert.assertFalse(driver.findElement(By.xpath("//div/h3")).getText().contains("Gizela"));
     }
 
     @After
     public void tearDown(){
-//        driver.quit();
+        driver.quit();
     }
 }
