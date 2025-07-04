@@ -41,8 +41,8 @@ public class KalkulackaTest {
         driver.findElement(By.id("count")).click();
         driver.findElement(By.id("reset")).click();
 
-        Assert.assertTrue(driver.findElement(By.id("firstInput")).getAttribute("value").isEmpty());
-        Assert.assertTrue(driver.findElement(By.id("secondInput")).getAttribute("value").isEmpty());
+        Assert.assertEquals("First input should be empty", "", driver.findElement(By.id("firstInput")).getAttribute("value"));
+        Assert.assertEquals("Second input should be empty", "", driver.findElement(By.id("secondInput")).getAttribute("value"));
         Assert.assertTrue(driver.findElement(By.id("result")).getText().isEmpty());
     }
 
@@ -50,10 +50,14 @@ public class KalkulackaTest {
         enterInputs("blud1", "blud2");
         driver.findElement(By.id("count")).click();
 
-        Assert.assertTrue(driver.findElement(By.xpath("//div[input[@id='firstInput']]"))
-                .getAttribute("class").contains("has-error"));
-        Assert.assertTrue(driver.findElement(By.xpath("//div[input[@id='secondInput']]"))
-                .getAttribute("class").contains("has-error"));
+        String firstClass = driver.findElement(By.xpath("//div[input[@id='firstInput']]")).getAttribute("class");
+        Assert.assertNotNull("First input container should have a class attribute", firstClass);
+        Assert.assertTrue("First input container should have 'has-error' class", firstClass.contains("has-error"));
+
+        String secondClass = driver.findElement(By.xpath("//div[input[@id='secondInput']]")).getAttribute("class");
+        Assert.assertNotNull("Second input container should have a class attribute", secondClass);
+        Assert.assertTrue("Second input container should have 'has-error' class", secondClass.contains("has-error"));
+
     }
 
     @After
