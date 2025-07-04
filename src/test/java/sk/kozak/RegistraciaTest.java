@@ -1,18 +1,20 @@
 package sk.kozak;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import static org.junit.Assert.assertTrue;
 import java.time.Duration;
+import java.util.List;
 
 public class RegistraciaTest {
-    private WebDriver driver; // class variable
+    private WebDriver driver;
+    private WebDriverWait wait;
     private static final String BASE_URL = "http://localhost/playground/registracia.php";
     private final String validEmail = "brano@manohy.sk";
     private final String validName = "brano";
@@ -22,8 +24,12 @@ public class RegistraciaTest {
 
     @Before
     public void setUp(){
-        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver.exe");
-        driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--disable-web-security");
+        options.addArguments("--disable-features=VizDisplayCompositor");
+
+        driver = new ChromeDriver(options);
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         driver.manage().window().maximize();
         driver.get(BASE_URL);
 
@@ -31,43 +37,76 @@ public class RegistraciaTest {
 
     @Test
     public void testMissingAllInputs() {
-        driver.findElement(By.id("checkbox")).click();
-        driver.findElement(By.xpath("//button[@type='submit']")).click();
+        WebElement checkbox = wait.until(ExpectedConditions.elementToBeClickable(By.name("robot")));
+        checkbox.click();
 
-        new WebDriverWait(driver, Duration.ofSeconds(3))
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(@class,'alert-danger')]")));
+        WebElement submitButton = driver.findElement(By.xpath("//button[@type='submit']"));
+        submitButton.click();
 
-        Assert.assertTrue(driver.findElement(By.xpath("//div[contains(@class,'alert-danger')]")).isDisplayed());
+        WebElement errorAlert = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[contains(@class,'alert-danger')]")));
+        Assert.assertTrue("Error alert should be displayed", errorAlert.isDisplayed());
+
+
     }
 
     @Test
     public void testMissingPasswords (){
-        driver.findElement(By.id("checkbox")).click();
         driver.findElement(By.name("email")).sendKeys(validEmail);
         driver.findElement(By.name("name")).sendKeys(validName);
         driver.findElement(By.name("surname")).sendKeys(validSurname);
+
+        WebElement checkbox = driver.findElement(By.name("robot"));
+        checkbox.click();
+        System.out.println("Checkbox selected before click: " + checkbox.isSelected());
+        checkbox.click();
+        System.out.println("Checkbox selected after click: " + checkbox.isSelected());
+
         driver.findElement(By.xpath("//button[@type='submit']")).click();
 
-        new WebDriverWait(driver, Duration.ofSeconds(3))
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(@class,'alert-danger')]")));
-
-        Assert.assertTrue(driver.findElement(By.xpath("//div[contains(@class,'alert-danger')]")).isDisplayed());
+        WebElement errorAlert = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[contains(@class,'alert-danger')]")));
+        Assert.assertTrue("Error alert should be displayed for missing passwords", errorAlert.isDisplayed());
     }
 
     @Test
     public void testMismatchedPasswords (){
-        driver.findElement(By.id("checkbox")).click();
         driver.findElement(By.name("email")).sendKeys(validEmail);
         driver.findElement(By.name("name")).sendKeys(validName);
         driver.findElement(By.name("surname")).sendKeys(validSurname);
         driver.findElement(By.name("password")).sendKeys("bludcislo1");
         driver.findElement(By.name("password-repeat")).sendKeys(validPassword);
+
+        WebElement checkbox = driver.findElement(By.name("robot"));
+        checkbox.click();
+
         driver.findElement(By.xpath("//button[@type='submit']")).click();
 
-        new WebDriverWait(driver, Duration.ofSeconds(3))
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(@class,'alert-danger')]")));
+        WebElement errorAlert = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[contains(@class,'alert-danger')]")));
+        Assert.assertTrue("Error alert should be displayed for mismatched passwords", errorAlert.isDisplayed());
+    }
 
-        Assert.assertTrue(driver.findElement(By.xpath("//div[contains(@class,'alert-danger')]")).isDisplayed());
+    @Test
+    public void testShortPassword() {
+        // Test password shorter than 5 characters
+        driver.findElement(By.name("email")).sendKeys(validEmail);
+        driver.findElement(By.name("name")).sendKeys(validName);
+        driver.findElement(By.name("surname")).sendKeys(validSurname);
+        driver.findElement(By.name("password")).sendKeys("123");
+        driver.findElement(By.name("password-repeat")).sendKeys("123");
+
+        // Check robot checkbox
+        WebElement checkbox = driver.findElement(By.name("robot"));
+        checkbox.click();
+
+        // Submit form
+        driver.findElement(By.xpath("//button[@type='submit']")).click();
+
+        // Verify error message
+        WebElement errorAlert = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[contains(@class,'alert-danger')]")));
+        Assert.assertTrue("Error alert should be displayed for short password", errorAlert.isDisplayed());
     }
 
     @Test
@@ -77,12 +116,12 @@ public class RegistraciaTest {
         driver.findElement(By.name("surname")).sendKeys(validSurname);
         driver.findElement(By.name("password")).sendKeys(validPassword);
         driver.findElement(By.name("password-repeat")).sendKeys(validPassword);
+
         driver.findElement(By.xpath("//button[@type='submit']")).click();
 
-        new WebDriverWait(driver, Duration.ofSeconds(3))
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(@class,'alert-danger')]")));
-
-        Assert.assertTrue(driver.findElement(By.xpath("//div[contains(@class,'alert-danger')]")).isDisplayed());
+        WebElement errorAlert = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[contains(@class,'alert-danger')]")));
+        Assert.assertTrue("Error alert should be displayed for missing robot checkbox", errorAlert.isDisplayed());
     }
 
     @Test
@@ -92,13 +131,32 @@ public class RegistraciaTest {
         driver.findElement(By.name("surname")).sendKeys(validSurname);
         driver.findElement(By.name("password")).sendKeys(validPassword);
         driver.findElement(By.name("password-repeat")).sendKeys(validPassword);
-        driver.findElement(By.id("checkbox")).click();
+
+        WebElement checkbox = driver.findElement(By.name("robot"));
+        checkbox.click();
+
         driver.findElement(By.xpath("//button[@type='submit']")).click();
 
-        new WebDriverWait(driver, Duration.ofSeconds(3))
-                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(@class,'alert-success')]")));
+        WebElement successAlert = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[contains(@class,'alert-success')]")));
+        Assert.assertTrue("Success alert should be displayed", successAlert.isDisplayed());
 
-        Assert.assertTrue(driver.findElement(By.xpath("//div[contains(@class,'alert-success')]")).isDisplayed());
+        String successText = successAlert.getText();
+        Assert.assertTrue("Success message should contain 'uspesna'",
+                successText.contains("uspesna"));
+
+    }
+
+    @Test
+    public void testInputErrorBorder () {
+        driver.findElement(By.xpath("//button[@type='submit']")).click();
+
+        List<WebElement> formDivs = driver.findElements(By.xpath("//div[input]"));
+        for (WebElement formDiv : formDivs) System.out.println(formDiv.getAttribute("class"));
+
+        driver.findElement(By.xpath("//button[@type='submit']")).click();
+
+        assertTrue(driver.findElement(By.xpath("//div[contains(@class,'form-group') and contains(@class,'has-error')]")).isDisplayed());
     }
 
     @After
