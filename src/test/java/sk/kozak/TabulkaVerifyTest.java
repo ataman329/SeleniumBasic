@@ -39,7 +39,7 @@ public class TabulkaVerifyTest {  // <- rename file to match this class name
                 String actual = driver.findElement(By.xpath("//tr[" + i + "]/td")).getText();
                 Assert.assertEquals("Row " + i + " mismatch", expected, actual);
             } catch (Error e) {
-                verificationErrors.append(e.toString()).append("\n");
+                verificationErrors.append(e).append("\n");
             }
         }
     }
