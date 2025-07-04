@@ -14,7 +14,7 @@ import java.util.List;
 public class TabulkaVerifyTest {  // <- rename file to match this class name
 
     private WebDriver driver;
-    private StringBuffer verificationErrors = new StringBuffer();
+    private final StringBuffer verificationErrors = new StringBuffer();
     private static final String BASE_URL = "http://localhost/playground/tabulka.php";
 
     @Before
@@ -48,7 +48,7 @@ public class TabulkaVerifyTest {  // <- rename file to match this class name
     public void tearDown() {
         driver.quit();
 
-        if (verificationErrors.length() > 0) {
+        if (!verificationErrors.isEmpty()) {
             Assert.fail(verificationErrors.toString());
         }
     }

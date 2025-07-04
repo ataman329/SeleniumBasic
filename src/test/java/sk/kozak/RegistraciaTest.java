@@ -5,9 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import static org.junit.Assert.assertTrue;
 import java.time.Duration;
-import java.util.List;
 
 public class RegistraciaTest extends MainTest {
     private WebDriverWait wait;
