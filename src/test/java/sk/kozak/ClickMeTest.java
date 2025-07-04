@@ -1,25 +1,19 @@
 package sk.kozak;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 
-public class ClickMeTest {
-    private WebDriver driver; // class variable
-    private static final String BASE_URL = "http://localhost/playground/clickmebaby.php";
+public class ClickMeTest extends MainTest {
 
     @Before
-    public void setUp(){
-        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver.exe");
-        driver = new ChromeDriver();
+    public void openBaseUrl(){
+        driver.get(getBASE_URL() + "clickmebaby.php");
     }
+
     @Test
     public void test(){
-        driver.get(BASE_URL);
         Assert.assertEquals("Inicialny pocet klikov","0", driver.findElement(By.id("clicks")).getText());
         Assert.assertEquals("klikov", driver.findElement(By.className("description")).getText());
         for (int i = 1; i < 11; i++) {
@@ -42,10 +36,5 @@ public class ClickMeTest {
 
 
 
-    }
-
-    @After
-    public void tearDown(){
-//        driver.quit();
     }
 }

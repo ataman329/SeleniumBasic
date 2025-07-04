@@ -1,23 +1,15 @@
 package sk.kozak;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 
-public class KalkulackaTest {
-    private WebDriver driver; // class variable
-    private static final String BASE_URL = "http://localhost/playground/kalkulacka.php";
+public class KalkulackaTest extends MainTest {
 
     @Before
-    public void setUp(){
-        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver.exe");
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.get(BASE_URL);
+    public void openBaseUrl(){
+        driver.get(getBASE_URL() + "kalkulacka.php");
     }
 
     @Test
@@ -58,11 +50,6 @@ public class KalkulackaTest {
         Assert.assertNotNull("Second input container should have a class attribute", secondClass);
         Assert.assertTrue("Second input container should have 'has-error' class", secondClass.contains("has-error"));
 
-    }
-
-    @After
-    public void tearDown(){
-        driver.quit();
     }
 
     private void enterInputs(String firstInput, String secondInput) {

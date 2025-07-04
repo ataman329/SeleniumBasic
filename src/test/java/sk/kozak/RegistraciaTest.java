@@ -2,20 +2,15 @@ package sk.kozak;
 
 import org.junit.*;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import static org.junit.Assert.assertTrue;
 import java.time.Duration;
 import java.util.List;
 
-public class RegistraciaTest {
-    private WebDriver driver;
+public class RegistraciaTest extends MainTest {
     private WebDriverWait wait;
-    private static final String BASE_URL = "http://localhost/playground/registracia.php";
     private final String validEmail = "brano@manohy.sk";
     private final String validName = "brano";
     private final String validSurname = "peres";
@@ -23,15 +18,9 @@ public class RegistraciaTest {
 
 
     @Before
-    public void setUp(){
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--disable-web-security");
-        options.addArguments("--disable-features=VizDisplayCompositor");
-
-        driver = new ChromeDriver(options);
+    public void openBaseUrl(){
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        driver.manage().window().maximize();
-        driver.get(BASE_URL);
+        driver.get(getBASE_URL() + "registracia.php");
 
     }
 
@@ -157,11 +146,5 @@ public class RegistraciaTest {
         driver.findElement(By.xpath("//button[@type='submit']")).click();
 
         assertTrue(driver.findElement(By.xpath("//div[contains(@class,'form-group') and contains(@class,'has-error')]")).isDisplayed());
-    }
-
-    @After
-    public void tearDown(){
-
-        driver.quit();
     }
 }
